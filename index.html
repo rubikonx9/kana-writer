@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Kana writer</title>
+
+        <link rel="stylesheet" href="kana-writer.css">
+
+        <script src="kana.js"></script>
+        <script src="kana-writer.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Kana writer</h1>
+        </header>
+
+        <main>
+            <section id="romaji">
+                <textarea
+                    id="romaji-input"
+                    rows=20
+                    placeholder="Enter your romaji here..."
+                    oninput="convertRomajiToKana();"
+                ></textarea>
+            </section>
+
+            <section id="hiragana">
+                <h2>Hiragana</h2>
+                <div id="output-hiragana">
+            </section>
+
+            <section id="katakana">
+                <h2>Katakana</h2>
+                <div id="output-katakana">
+            </section>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+body {
+    margin:        0;
+    border:        0;
+
+    padding-left:  100px;
+    padding-right: 100px;
+    padding-top:   25px;
+
+    background:    #fcfcfc;
+    font-family:   Palatino, Georgia, Times;
+}
+
+header {
+    font-size: 20px;
+}
+
+main {
+    display:               grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows:    50% 50%;
+    grid-gap:              25px;
+}
+
+section#romaji {
+    grid-column: 1;
+    grid-row:    1 / span 2;
+}
+
+section#hiragana {
+    grid-column: 2;
+    grid-row:    1;
+}
+
+section#katakana {
+    grid-column: 2;
+    grid-row:    2;
+}
+
+section#romaji textarea#romaji-input {
+    background:    #fefefe;
+    border-radius: 5px;
+    border-width:  3px;
+    border-style:  solid;
+    border-color:  #c8c8c8;
+    padding:       15px;
+    width:         100%;
+    height:        100%;
+    box-sizing:    border-box;
+    font-size:     20px;
+    resize:        none;
+}
+
+section#hiragana div#output-hiragana,
+section#katakana div#output-katakana {
+    font-size: 20px;
+}
