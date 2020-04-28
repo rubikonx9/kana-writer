@@ -130,5 +130,5 @@ const Kana = {
 
     // Special: only used internally
     "small-tsu":  { Hiragana: "っ", Katakana: "ッ" },
-    "long-vovel": { Hiragana: "",   Katakana: "ー" } // @TODO How to handle it?
+    "long-vovel": { Hiragana: "",   Katakana: "ー" }
 };

@@ -78,7 +78,8 @@ function convertWord(romaji) {
             // This will be the result.
             hiragana.push(kana.Hiragana);
 
-            if (previousKanaLastVovel !== "" && previousKanaLastVovel === romaji[i]) {
+            if (previousKanaLastVovel !== ""
+            && (previousKanaLastVovel === romaji[i] || (previousKanaLastVovel === "o" && romaji[i] === "u"))) {
                 // We're doubling the same vovel
                 katakana.push(Kana["long-vovel"].Katakana);
             } else {
