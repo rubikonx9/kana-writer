@@ -54,3 +54,19 @@ section#hiragana div#output-hiragana,
 section#katakana div#output-katakana {
     font-size: 20px;
 }
+
+section#hiragana div#output-hiragana a,
+section#hiragana div#output-hiragana a:hover,
+section#hiragana div#output-hiragana a:visited,
+section#katakana div#output-katakana a,
+section#katakana div#output-katakana a:hover,
+section#katakana div#output-katakana a:visited {
+    color:           inherit;
+    text-decoration: underline dashed;
+    transition:      all 1s ease;
+}
+
+section#hiragana div#output-hiragana a:hover,
+section#katakana div#output-katakana a:hover {
+    text-shadow: 1px 1px #989898;
+}

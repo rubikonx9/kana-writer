@@ -20,12 +20,47 @@ function convertRomajiToKana() {
 
     const [hiragana, katakana] = ["hiragana", "katakana"].map(kanaType => {
         return convertedTexts.map(words => {
-            return words.map(word => word[kanaType]).join(" ");
+            const kanaWords = words.map(word => {
+                return makeJishoLink(
+                    handleSpecialWords(
+                        word[kanaType]
+                    )
+                );
+            });
+
+            return kanaWords.join(" ");
         }).join("<br>")
     });
 
     document.getElementById("output-hiragana").innerHTML = hiragana;
     document.getElementById("output-katakana").innerHTML = katakana;
+}
+
+/**
+ * Handles some special cases of stand-alone words.
+ * Ex. uses は instead of わ to represent "wa";
+ *
+ * @param   {String} word - Kana word.
+ *
+ * @returns {String}
+ */
+function handleSpecialWords(word) {
+    if (word === "わ") {
+        return "は";
+    }
+
+    return word;
+}
+
+/**
+ * Creates a link to an on-line dictionary.
+ *
+ * @param   {String} word - Kana word.
+ *
+ * @returns {String}
+ */
+function makeJishoLink(word) {
+    return `<a href="https://jisho.org/search/${word}" target="_blank">${word}</a>`;
 }
 
 /**
