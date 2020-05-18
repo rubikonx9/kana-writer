@@ -20,20 +20,49 @@ function convertRomajiToKana() {
 
     const [hiragana, katakana] = ["hiragana", "katakana"].map(kanaType => {
         return convertedTexts.map(words => {
-            const kanaWords = words.map(word => {
+            return words.map(word => {
                 return makeJishoLink(
                     handleSpecialWords(
                         word[kanaType]
                     )
                 );
-            });
-
-            return kanaWords.join(" ");
+            }).join(" ");
+        }).map(line => {
+            return "<img "
+                 +     "class='icon' "
+                 +     "src='img/icon-clipboard-26x26.png' "
+                 +     "onclick='copyToClipboard(this);' "
+                 +     "title='Copy line to clipboard'"
+                 + "/>"
+                 + line;
         }).join("<br>")
     });
 
     document.getElementById("output-hiragana").innerHTML = hiragana;
     document.getElementById("output-katakana").innerHTML = katakana;
+}
+
+/**
+ * Copies the clicked text to the clipboard using a hidden text input.
+ *
+ * @param   {Element} link - Copy icon clicked.
+ *
+ * @returns {void}
+ */
+function copyToClipboard(link) {
+    const toCopy = Array.prototype.map.call(
+        link.parentElement.getElementsByTagName("a"),
+        (x) => x.text
+    ).join(" ").trim();
+
+    const clipboardInput = document.getElementById("clipboard-input");
+
+    clipboardInput.value = toCopy;
+    clipboardInput.select();
+
+    document.execCommand("copy");
+
+    console.log("Copied " + toCopy);
 }
 
 /**
@@ -60,7 +89,7 @@ function handleSpecialWords(word) {
  * @returns {String}
  */
 function makeJishoLink(word) {
-    return `<a href="https://jisho.org/search/${word}" target="_blank">${word}</a>`;
+    return `<a href="https://jisho.org/search/${word}" target="_blank" title="Check in Jisho online dictionary">${word}</a>`;
 }
 
 /**
