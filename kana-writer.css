@@ -21,6 +21,18 @@ main {
     grid-gap:              25px;
 }
 
+#tooltip {
+    position:      absolute;
+    opacity:       0.0;
+    padding:       10px;
+    background:    #fcfcfc;
+    border-radius: 5px;
+    border-width:  3px;
+    border-style:  solid;
+    border-color:  #c8c8c8;
+    transition:    opacity 0.5s ease;
+}
+
 /* It must be visible, otherwise copying to clipboard will not work. */
 #clipboard-input {
     position: absolute;
@@ -28,24 +40,18 @@ main {
 }
 
 img.icon {
-    width:        16px;
-    height:       16px;
-    margin-right: 15px;
+    width:  16px;
+    height: 16px;
 }
 
 section#romaji {
     grid-column: 1;
-    grid-row:    1 / span 2;
-}
-
-section#hiragana {
-    grid-column: 2;
     grid-row:    1;
 }
 
-section#katakana {
+section#kana {
     grid-column: 2;
-    grid-row:    2;
+    grid-row:    1;
 }
 
 section#romaji textarea#romaji-input {
@@ -62,23 +68,28 @@ section#romaji textarea#romaji-input {
     resize:        none;
 }
 
-section#hiragana div#output-hiragana,
-section#katakana div#output-katakana {
+section#kana div#output-kana {
     font-size: 20px;
 }
 
-section#hiragana div#output-hiragana a,
-section#hiragana div#output-hiragana a:hover,
-section#hiragana div#output-hiragana a:visited,
-section#katakana div#output-katakana a,
-section#katakana div#output-katakana a:hover,
-section#katakana div#output-katakana a:visited {
+#tooltip a,
+#tooltip a:hover,
+#tooltip a:visited {
     color:           inherit;
     text-decoration: underline dashed;
     transition:      all 1s ease;
+    margin:          3px;
 }
 
-section#hiragana div#output-hiragana a:hover,
-section#katakana div#output-katakana a:hover {
+section#kana div#output-kana a:hover {
     text-shadow: 1px 1px #989898;
+}
+
+div#output-kana span {
+    margin: 3px;
+    transition: text-shadow 0.5s ease;
+}
+
+div#output-kana span:hover {
+    text-shadow: -0.025ex 0 black, 0.025ex 0 black;
 }

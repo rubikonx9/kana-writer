@@ -4,40 +4,48 @@
         <meta charset="UTF-8">
         <title>Kana writer</title>
 
-        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+        <link rel = "icon" type = "image/png" sizes = "32x32" href = "img/favicon-32x32.png">
+        <link rel = "icon" type = "image/png" sizes = "16x16" href = "img/favicon-16x16.png">
 
-        <link rel="stylesheet" href="kana-writer.css">
+        <link rel = "stylesheet" href = "kana-writer.css">
 
-        <script src="kana.js"></script>
-        <script src="kana-writer.js"></script>
+        <script src = "kana.js"></script>
+        <script src = "kana-writer.js"></script>
     </head>
 
     <body>
-        <input id="clipboard-input" type="text">
+        <div id = "tooltip">
+        </div>
+
+        <input id = "clipboard-input" type="text">
 
         <header>
             <h1>Kana writer</h1>
         </header>
 
         <main>
-            <section id="romaji">
+            <section id = "romaji">
                 <textarea
-                    id="romaji-input"
-                    rows=20
-                    placeholder="Enter your romaji here..."
-                    oninput="convertRomajiToKana();"
+                    id          = "romaji-input"
+                    rows        = 20
+                    placeholder = "Enter your romaji here..."
+                    oninput     = "convertRomajiToKana();"
                 ></textarea>
             </section>
 
-            <section id="hiragana">
-                <h2>Hiragana</h2>
-                <div id="output-hiragana">
-            </section>
+            <section id="kana">
+                <h2>
+                    Kana
 
-            <section id="katakana">
-                <h2>Katakana</h2>
-                <div id="output-katakana">
+                    <img
+                        class   = "icon"
+                        src     = "img/icon-clipboard-26x26.png"
+                        onclick = "copyToClipboard();"
+                        title   = "Copy to clipboard"
+                    />
+                </h2>
+
+                <div id = "output-kana">
             </section>
         </main>
     </body>

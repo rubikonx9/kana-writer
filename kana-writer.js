@@ -14,32 +14,86 @@ function convertRomajiToKana() {
     const lines       = text.split(/\n/);
     const wordsByLine = lines.map(line => line.split(/\s/));
 
-    const convertedTexts = wordsByLine.map(words => {
-        return words.map(word => convertWord(word.toLowerCase()))
-    });
+    const output = document.getElementById("output-kana");
+    let idx = 0;
 
-    const [hiragana, katakana] = ["hiragana", "katakana"].map(kanaType => {
-        return convertedTexts.map(words => {
-            return words.map(word => {
-                return makeJishoLink(
-                    handleSpecialWords(
-                        word[kanaType]
-                    )
-                );
-            }).join(" ");
-        }).map(line => {
-            return "<img "
-                 +     "class='icon' "
-                 +     "src='img/icon-clipboard-26x26.png' "
-                 +     "onclick='copyToClipboard(this);' "
-                 +     "title='Copy line to clipboard'"
-                 + "/>"
-                 + line;
-        }).join("<br>")
-    });
+    while (output.firstChild) {
+        output.lastChild.remove();
+    }
 
-    document.getElementById("output-hiragana").innerHTML = hiragana;
-    document.getElementById("output-katakana").innerHTML = katakana;
+    for (const wordsForLine of wordsByLine) {
+        for (const word of wordsForLine) {
+            ++idx;
+
+            const {hiragana, katakana} = convertWord(word.toLowerCase());
+
+            const possibleKanas = [
+                ...handleSpecialWords(hiragana),
+                katakana
+            ];
+
+            const mostProbable = possibleKanas[0];
+            const span = document.createElement("span");
+
+            span.id        = `word-${idx}`;
+            span.innerHTML = mostProbable;
+
+            span.addEventListener("mouseover", (event) => {
+                const tooltipContents = possibleKanas.map((kana) => {
+                    return makeReplacemenetLink(span.id, kana) + makeJishoLink(kana);
+                }).join("<br>");
+
+                showTooltip(event.target, tooltipContents);
+            });
+
+            span.addEventListener("mouseout", (event) => {
+                hideTooltip();
+            });
+
+            output.appendChild(span);
+        }
+
+        output.appendChild(document.createElement("br"));
+    }
+}
+
+function showTooltip(referenceNode, contents) {
+    removeHideTooltipTimeout();
+
+    const tooltip = document.getElementById("tooltip");
+
+    tooltip.innerHTML     = contents;
+    tooltip.style.opacity = "1.0";
+
+    const referenceNodeRect = referenceNode.getBoundingClientRect();
+
+    tooltip.style.top  = (referenceNode.offsetTop + referenceNodeRect.height) + "px";
+    tooltip.style.left = referenceNode.offsetLeft + "px";
+}
+
+function hideTooltip() {
+    hideTooltip.hideTimeoutID = setTimeout(() => {
+        const tooltip = document.getElementById("tooltip");
+
+        tooltip.style.opacity = "0.0";
+    }, 100); // enough time for user to move cursor over the tooltip
+
+    hideTooltip.moveAwayTimeoutID = setTimeout(() => {
+        tooltip.style.left = "-9999px";
+    }, 500); // same as transition time in CSS
+}
+
+function removeHideTooltipTimeout() {
+    clearTimeout(hideTooltip.hideTimeoutID);
+    clearTimeout(hideTooltip.moveAwayTimeoutID);
+}
+
+function makeReplacemenetLink(spanID, kana) {
+    return `<a href="#" title="Use this word instead" onclick="replaceKana('${spanID}', '${kana}')">${kana}</a>`;
+}
+
+function replaceKana(spanID, kana) {
+    document.getElementById(spanID).innerHTML = kana;
 }
 
 /**
@@ -49,11 +103,11 @@ function convertRomajiToKana() {
  *
  * @returns {void}
  */
-function copyToClipboard(link) {
+function copyToClipboard() {
     const toCopy = Array.prototype.map.call(
-        link.parentElement.getElementsByTagName("a"),
-        (x) => x.text
-    ).join(" ").trim();
+        document.getElementById("output-kana").getElementsByTagName("span"),
+        (span) => span.innerHTML
+    ).join("\n").trim();
 
     const clipboardInput = document.getElementById("clipboard-input");
 
@@ -61,8 +115,6 @@ function copyToClipboard(link) {
     clipboardInput.select();
 
     document.execCommand("copy");
-
-    console.log("Copied " + toCopy);
 }
 
 /**
@@ -74,11 +126,16 @@ function copyToClipboard(link) {
  * @returns {String}
  */
 function handleSpecialWords(word) {
-    if (word === "わ") {
-        return "は";
+    const map = {
+        "わ": ["は", "わ"],
+        "え": ["へ", "え"]
+    };
+
+    if (word in map) {
+        return map[word];
     }
 
-    return word;
+    return [word];
 }
 
 /**
@@ -89,7 +146,9 @@ function handleSpecialWords(word) {
  * @returns {String}
  */
 function makeJishoLink(word) {
-    return `<a href="https://jisho.org/search/${word}" target="_blank" title="Check in Jisho online dictionary">${word}</a>`;
+    return `<a href="https://jisho.org/search/${word}" target="_blank" title="Check in Jisho online dictionary">
+        <img class="icon" src="img/icon-external-link-32x32.png"></img>
+    </a>`;
 }
 
 /**
@@ -179,4 +238,14 @@ function convertWord(romaji) {
 // Translate what's there on page load
 window.onload = () => {
     convertRomajiToKana();
+
+    const tooltip = document.getElementById("tooltip");
+
+    tooltip.addEventListener("mouseover", (event) => {
+        removeHideTooltipTimeout();
+    });
+
+    tooltip.addEventListener("mouseout", (event) => {
+        hideTooltip();
+    });
 };

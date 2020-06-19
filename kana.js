@@ -50,6 +50,7 @@ const Kana = {
     "ha":  { Hiragana: "は", Katakana: "ハ" },
     "hi":  { Hiragana: "ひ", Katakana: "ヒ" },
     "hu":  { Hiragana: "ふ", Katakana: "フ" },
+    "fu":  { Hiragana: "ふ", Katakana: "フ" },
     "he":  { Hiragana: "へ", Katakana: "ヘ" },
     "ho":  { Hiragana: "ほ", Katakana: "ホ" },
 
